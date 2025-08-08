@@ -1,6 +1,8 @@
 import CheckNetwork from '@/views/CheckNetwork.vue'
 import Domains from '@/views/Domains.vue'
 import Login from '@/views/Login.vue'
+import ManualUnblocking from '@/views/ManualUnblocking.vue'
+import ServiceManagment from '@/views/ServiceManagment.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -12,9 +14,19 @@ const router = createRouter({
       component: Login,
     },
     {
+      path: '/serviceManagment',
+      name: 'login',
+      component: ServiceManagment,
+    },
+    {
       path: '/domains',
       name: 'domains',
       component: Domains,
+    },
+    {
+      path: '/manualUnblocking',
+      name: 'manualUnblocking',
+      component: ManualUnblocking,
     },
     {
       path: '/checkNetwork',

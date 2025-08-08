@@ -38,3 +38,10 @@ export const checkServiceNetwork = (value) => {
     args: value,
   })
 }
+
+export const manualUnblocking = (networks) => {
+  return axiosInstance.post(`/ManualUnblocking`, {
+    method: 'IDENTIFY',
+    args: networks,
+  })
+}
