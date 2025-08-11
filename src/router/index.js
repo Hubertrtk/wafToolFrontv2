@@ -15,7 +15,7 @@ const router = createRouter({
     },
     {
       path: '/serviceManagment',
-      name: 'login',
+      name: 'serviceManagment',
       component: ServiceManagment,
     },
     {

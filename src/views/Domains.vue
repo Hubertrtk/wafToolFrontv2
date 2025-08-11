@@ -119,7 +119,7 @@ function openDomain() {
 
 .container {
   display: flex;
-  height: 100vh; /* <--- ważne! Ustawiamy całą wysokość okna */
+  height: 100%; /* <--- ważne! Ustawiamy całą wysokość okna */
   overflow: hidden; /* zapobiega przewijaniu całej strony */
   font-family: Arial, sans-serif;
 }
@@ -130,7 +130,7 @@ function openDomain() {
   padding: 20px;
   border-right: 1px solid #ddd;
   overflow-y: auto; /* <--- to dodaje scroll tylko w sidebarze */
-  height: 100vh; /* <--- pełna wysokość okna dla sidebaru */
+  height: 100%;
 }
 
 .sidebar h2 {

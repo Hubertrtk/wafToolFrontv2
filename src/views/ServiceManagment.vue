@@ -3,16 +3,16 @@
     <header class="top-panel">
       <h1>Playlive</h1>
       <div class="controls">
-        <SearchNetworkInput />
+        <SearchNetworkInput @selectNetwork="handleSelectedNetwork" />
         <select v-model="selectedStatus">
           <option value="block">BLOCK</option>
           <option value="disblock">DISBLOCK</option>
+          <option value="remove">REMOVE</option>
         </select>
         <label class="checkbox-label">
+          High priority:
           <input type="checkbox" v-model="highPriority" />
-          High priority
         </label>
-        <button @click="addNetworkToHandle">+</button>
         <button @click="handleNetworks">Handle</button>
       </div>
     </header>
@@ -51,58 +51,28 @@
 </template>
 
 <script setup>
+import { getGlobalBlockAzureNetworks, globalBlockAzureNetworks } from '@/api/serviceApi'
 import SearchNetworkInput from '@/components/searchNetworkInput/SearchNetworkInput.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
-const networks = ref({
-  AS16276: {
-    lowerPriority: [],
-    higherPriority: ['ovh.net'],
-    utb: true,
-    status: 'block',
-  },
-  'ovh.net': {
-    lowerPriority: ['AS16276', 'AS35540'],
-    higherPriority: [],
-    utb: true,
-    status: 'disblock',
-  },
-  AS14618: {
-    lowerPriority: [],
-    higherPriority: [],
-    utb: true,
-    status: 'block',
-  },
-  AS21003: {
-    lowerPriority: [],
-    higherPriority: [],
-    utb: true,
-    status: 'block',
-  },
-  AS21334: {
-    lowerPriority: [],
-    higherPriority: [],
-    utb: true,
-    status: 'block',
-  },
-  AS16509: {
-    lowerPriority: [],
-    higherPriority: [],
-    utb: true,
-    status: 'block',
-  },
-  AS24940: {
-    lowerPriority: [],
-    higherPriority: [],
-    utb: true,
-    status: 'block',
-  },
-})
+const networks = ref({})
 
-const networksToHandle = ref(['AS16276', 'AS14618'])
+const networksToHandle = ref([])
 const newNetwork = ref('')
 const selectedStatus = ref('block')
 const highPriority = ref(false)
+
+onMounted(async () => {
+  await getGlobalBlockAzureNetworks().then((r) => {
+    networks.value = r.data
+  })
+})
+
+const handleSelectedNetwork = (networkName) => {
+  if (!networksToHandle.value.includes(networkName)) {
+    networksToHandle.value.push(networkName)
+  }
+}
 
 const blockedNetworks = computed(() =>
   Object.entries(networks.value)
@@ -134,16 +104,32 @@ function removeFromHandle(networkName) {
   networksToHandle.value = networksToHandle.value.filter((n) => n !== networkName)
 }
 
-function handleNetworks() {
+async function handleNetworks() {
   // Tu będzie wywołanie backendu
   console.log('Handling networks:', {
     networksToHandle: networksToHandle.value,
     selectedStatus: selectedStatus.value,
     highPriority: highPriority.value,
   })
+  let reqData = networksToHandle.value.map((el) => {
+    let network = {}
+    network.priority = highPriority.value ? 'higher_priority' : 'lower_priority'
+    network.status = selectedStatus.value
+    network.network = el
+    return network
+  })
+  await globalBlockAzureNetworks(reqData)
+    .then(async (r) => {
+      networksToHandle.value = []
+      await getGlobalBlockAzureNetworks().then((r) => {
+        networks.value = r.data
+      })
+    })
+    .catch((r) => {
+      console.log(r)
+    })
 }
 </script>
-
 <style scoped>
 .container {
   max-width: 1000px;
@@ -152,10 +138,10 @@ function handleNetworks() {
   display: grid;
   grid-template-rows: auto auto 1fr;
   grid-gap: 20px;
-  min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #222;
   background: #f9f9f9;
+  height: 100%;
 }
 
 .top-panel {
@@ -186,12 +172,13 @@ function handleNetworks() {
 
 .controls input {
   flex-grow: 1;
-  min-width: 180px;
+  min-width: 40px;
   padding: 8px 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
   transition: border-color 0.2s ease;
+  /* margin-left: -60px; */
 }
 
 .controls input:focus {
@@ -212,7 +199,8 @@ function handleNetworks() {
 .checkbox-label {
   display: flex;
   align-items: center;
-  gap: 6px;
+  /* gap: 6px; */
+  justify-content: flex-start;
   font-size: 0.9rem;
   user-select: none;
 }
@@ -294,7 +282,7 @@ function handleNetworks() {
   margin: 0;
   flex-grow: 1;
   overflow-y: auto;
-  max-height: 300px;
+  max-height: 45vh;
 }
 
 .blocked li,

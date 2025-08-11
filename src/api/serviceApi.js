@@ -45,3 +45,28 @@ export const manualUnblocking = (networks) => {
     args: networks,
   })
 }
+
+export const identifyNetworks = (networks) => {
+  return axiosInstance.post(`/IdentifyNetworks`, {
+    method: 'IDENTIFY',
+    args: networks,
+  })
+}
+
+export const getGlobalBlockAzureNetworks = () => {
+  return axiosInstance.post(`/GlobalBlockAzure`, {
+    method: 'GET_NETWORKS',
+    args: [],
+  })
+}
+
+/**
+ * @param {*} networks {"network": "ovh.net", "status": "remove", "priority": "higher_priority"}
+ * @returns
+ */
+export const globalBlockAzureNetworks = (networks) => {
+  return axiosInstance.post(`/GlobalBlockAzure`, {
+    method: 'BLOCK_NETWORKS',
+    args: networks,
+  })
+}

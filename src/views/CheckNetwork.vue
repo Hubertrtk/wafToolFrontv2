@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <div class="domain-section-container" v-if="selectedNetwork">
+    <div class="domain-section-container" v-if="displayDomainSection">
       <div class="content">
         <h1>Weryfikacja domeny</h1>
         <button @click="openDomain" class="open-btn">Otwórz w nowej karcie</button>
@@ -85,6 +85,10 @@ const globalStore = useGlobalStore()
 const selectedNetwork = ref('')
 const networkInfo = ref({})
 const domainType = ref('')
+
+const displayDomainSection = computed(() => {
+  return networkInfo.value.networkType == 'domain'
+})
 
 watch(selectedNetwork, async (newValue) => {
   await checkServiceNetwork(newValue)
