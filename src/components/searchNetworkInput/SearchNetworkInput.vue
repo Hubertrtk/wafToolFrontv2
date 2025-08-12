@@ -94,9 +94,9 @@ watch(query, (newQuery) => {
   }, 1000)
 })
 </script>
-<style>
+<style scoped>
 .background-black {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   right: 0;

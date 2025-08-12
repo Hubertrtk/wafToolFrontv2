@@ -70,3 +70,31 @@ export const globalBlockAzureNetworks = (networks) => {
     args: networks,
   })
 }
+
+export const getTemplate = (templateFileName) => {
+  return axiosInstance.post(`/Template`, {
+    method: 'GET_TEMPLATE',
+    args: templateFileName,
+  })
+}
+
+export const getTemplates = () => {
+  return axiosInstance.post(`/Template`, {
+    method: 'GET_TEMPLATES',
+    args: [],
+  })
+}
+
+export const buildTemplate = (provider) => {
+  return axiosInstance.post(`/Template`, {
+    method: 'BUILD',
+    args: provider,
+  })
+}
+
+export const saveDbs = () => {
+  return axiosInstance.post(`/DatabaseManager`, {
+    method: 'SAVE_DATABASES',
+    args: [],
+  })
+}

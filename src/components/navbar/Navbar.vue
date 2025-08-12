@@ -16,6 +16,12 @@
           <RouterLink to="/serviceManagment">serviceManagment</RouterLink>
         </a>
         <a href="#">
+          <RouterLink to="/template">template</RouterLink>
+        </a>
+        <a href="#">
+          <RouterLink to="/database">database</RouterLink>
+        </a>
+        <a href="#">
           <RouterLink to="/login">login</RouterLink>
         </a>
       </nav>
@@ -46,6 +52,11 @@ function toggleMenu() {
   background: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1;
+}
+.navbar a {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 .container {
   display: flex;

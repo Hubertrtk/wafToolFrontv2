@@ -32,7 +32,9 @@
 <script setup>
 import { login } from '@/api/serviceApi'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const userName = ref('')
 const password = ref('')
 
@@ -45,8 +47,8 @@ async function submitForm() {
     }),
   )
   await login()
-    .then((r) => {
-      console.log('ok')
+    .then(() => {
+      router.push({ name: 'checkNetwork' })
     })
     .catch(async (err) => {
       await localStorage.removeItem('wtauthuser')
@@ -68,7 +70,7 @@ async function submitForm() {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100%;
   background: linear-gradient(135deg, #667eea, #764ba2);
   padding: 1rem;
 }

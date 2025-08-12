@@ -1,4 +1,4 @@
-const SERVICE_ACTIONS = {
+export const SERVICE_ACTIONS = {
   // ustawia status jako allow
   ALLOW: 'allow',
   //ustawia status jako block
@@ -9,12 +9,12 @@ const SERVICE_ACTIONS = {
   DIS_BLOCK: 'disblock',
 }
 
-const OVERLAPPING_NETWORK_PRIORITY = {
+export const OVERLAPPING_NETWORK_PRIORITY = {
   LOWER_PRIORITY: 'lower_priority',
   HIGHER_PRIORITY: 'higher_priority',
 }
 
-const NETWORK_TYPE = {
+export const NETWORK_TYPE = {
   ASN: 'asn',
 
   IPV4: 'ipv4',
@@ -24,10 +24,4 @@ const NETWORK_TYPE = {
 
   IPV4_NETBLOCK: 'ipv4_netblock',
   IPV6_NETBLOCK: 'ipv6_netblock',
-}
-
-module.exports = {
-  SERVICE_ACTIONS,
-  NETWORK_TYPE,
-  OVERLAPPING_NETWORK_PRIORITY,
 }

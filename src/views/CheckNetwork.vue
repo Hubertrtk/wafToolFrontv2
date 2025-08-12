@@ -5,17 +5,40 @@
     <div class="network-details-container">
       <h4>Type: {{ networkInfo.networkType }}</h4>
       <h4>Czy jest bezposrednio zdefiniowane w serwisie: {{ networkInfo.isInService }}</h4>
-      <h4>Wszystkie powiązane sieci:</h4>
-      <ul class="overlapping-networks-list">
+      <h4 v-if="overlappingIp.length">Wszystkie powiązane ip:</h4>
+      <ul v-if="overlappingIp.length" class="overlapping-networks-list">
         <li
           @click="handleClickAutocomplete(item.name)"
-          v-for="(item, index) in sortedOverlappingNetworks"
+          v-for="(item, index) in overlappingIp"
           :key="index"
           class="autocomplete-itemff"
         >
           {{ item.name }} {{ item.status }}
         </li>
       </ul>
+      <h4 v-if="overlappingDomains.length">Wszystkie powiązane domeny:</h4>
+      <ul v-if="overlappingDomains.length" class="overlapping-networks-list">
+        <li
+          @click="handleClickAutocomplete(item.name)"
+          v-for="(item, index) in overlappingDomains"
+          :key="index"
+          class="autocomplete-itemff"
+        >
+          {{ item.name }} {{ item.status }}
+        </li>
+      </ul>
+      <h4 v-if="overlappingAsn.length">Wszystkie powiązane asn:</h4>
+      <ul v-if="overlappingAsn.length" class="overlapping-networks-list">
+        <li
+          @click="handleClickAutocomplete(item.name)"
+          v-for="(item, index) in overlappingAsn"
+          :key="index"
+          class="autocomplete-itemff"
+        >
+          {{ item.name }} {{ item.status }}
+        </li>
+      </ul>
+      <h4 v-if="networkInfo.isInService">Serwis:</h4>
       <div class="inService-info-wrapper" v-if="networkInfo.isInService">
         <div class="inService-list-wrapper">
           <h6>Pod</h6>
@@ -79,6 +102,8 @@ import { computed, ref, watch } from 'vue'
 import SearchNetworkInput from '@/components/searchNetworkInput/SearchNetworkInput.vue'
 import { useRouter } from 'vue-router'
 import { useGlobalStore } from '@/stores/global'
+import { getNetworkType } from '@/helpers/getNetworkType'
+import { NETWORK_TYPE } from '@/helpers/constants'
 const router = useRouter()
 const globalStore = useGlobalStore()
 
@@ -116,10 +141,25 @@ const handleSelectedNetwork = (networkName) => {
   selectedNetwork.value = networkName
 }
 
-const sortedOverlappingNetworks = computed(() => {
-  return [...(networkInfo.value.infoOverlappingNetworks || [])]
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .reverse()
+const overlappingDomains = computed(() => {
+  return [...(networkInfo.value.infoOverlappingNetworks || [])].filter((el) => {
+    const type = getNetworkType(el.name)
+    return type == NETWORK_TYPE.DOMAIN
+  })
+})
+
+const overlappingAsn = computed(() => {
+  return [...(networkInfo.value.infoOverlappingNetworks || [])].filter((el) => {
+    const type = getNetworkType(el.name)
+    return type == NETWORK_TYPE.ASN
+  })
+})
+
+const overlappingIp = computed(() => {
+  return [...(networkInfo.value.infoOverlappingNetworks || [])].filter((el) => {
+    const type = getNetworkType(el.name)
+    return type == NETWORK_TYPE.IPV4 || type == NETWORK_TYPE.IPV6
+  })
 })
 
 const validateDomainVerificationSave = computed(() => {
@@ -137,14 +177,12 @@ const handleClickAutocomplete = (netName) => {
 }
 </script>
 
-<style>
+<style scoped>
 .unblock-section-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-.domain-section-container {
 }
 .content {
   flex: 1;
@@ -208,9 +246,35 @@ const handleClickAutocomplete = (netName) => {
   align-items: flex-start;
 }
 .overlapping-networks-list {
+  list-style: none; /* bez kropek */
+  padding: 0;
+  margin: 0 0 20px 0;
   max-height: 500px;
   min-width: 380px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+  overflow-x: hidden;
+}
+
+.autocomplete-itemff {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eaeaea;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+}
+
+.autocomplete-itemff:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-itemff:hover {
+  background-color: #f0f8ff;
+  transform: translateX(2px);
+  overflow: hidden;
 }
 
 .network-details-container {
@@ -218,7 +282,57 @@ const handleClickAutocomplete = (netName) => {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
+
+.network-details-container h4 {
+  margin-top: 15px;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+  border-left: 4px solid #007bff;
+  padding-left: 8px;
+}
+
+.inService-list-wrapper h6 {
+  margin: 10px 0 6px;
+  font-size: 0.95rem;
+  color: #555;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.inService-list-wrapper ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.inService-list-wrapper li {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.inService-list-wrapper li:hover {
+  background-color: #f7f7f7;
+}
+
+/* .overlapping-networks-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overlapping-networks-list::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 4px;
+}
+
+.overlapping-networks-list::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+} */
 
 .display-data-container {
   width: 100%;
@@ -226,5 +340,11 @@ const handleClickAutocomplete = (netName) => {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: #121414;
+}
+
+.autocomplete-list {
+  box-sizing: border-box; /* wlicza border i padding w szerokość */
+  overflow-x: hidden;
 }
 </style>
