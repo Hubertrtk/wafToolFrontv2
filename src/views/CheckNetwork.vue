@@ -4,6 +4,7 @@
     <h2>{{ selectedNetwork }}</h2>
     <div class="network-details-container">
       <h4>Type: {{ networkInfo.networkType }}</h4>
+      <h4 v-if="networkInfo.ipStatus">Ip status: {{ networkInfo.ipStatus }}</h4>
       <h4>Czy jest bezposrednio zdefiniowane w serwisie: {{ networkInfo.isInService }}</h4>
       <h4 v-if="overlappingIp.length">Wszystkie powiązane ip:</h4>
       <ul v-if="overlappingIp.length" class="overlapping-networks-list">
@@ -48,7 +49,12 @@
               v-for="(item, index) in networkInfo.serviceOverlappingNetworks.lowerPriority"
               :key="index"
               class="autocomplete-itemff"
+              :class="{
+                blocked: item.status === 'block',
+                disblocked: item.status === 'disblock',
+              }"
             >
+              <span class="status-dot"></span>
               {{ item.name }} {{ item.status }}
             </li>
           </ul>
@@ -61,7 +67,13 @@
               v-for="(item, index) in networkInfo.serviceOverlappingNetworks.higherPriority"
               :key="index"
               class="autocomplete-itemff"
+              :class="{
+                blocked: item.status === 'block',
+                disblocked: item.status === 'disblock',
+              }"
             >
+              <span class="status-dot"></span>
+
               {{ item.name }} {{ item.status }}
             </li>
           </ul>
@@ -275,6 +287,28 @@ const handleClickAutocomplete = (netName) => {
   background-color: #f0f8ff;
   transform: translateX(2px);
   overflow: hidden;
+}
+.autocomplete-itemff {
+  position: relative;
+  padding-left: 24px; /* miejsce na kółeczko */
+}
+
+.status-dot {
+  position: absolute;
+  right: 0;
+  top: 3px;
+  bottom: 3px;
+  /* transform: translateY(-50%); */
+  width: 10px;
+  border-radius: 4px;
+}
+
+.blocked .status-dot {
+  background-color: #9f0e0e;
+}
+
+.disblocked .status-dot {
+  background-color: #0062cc;
 }
 
 .network-details-container {
