@@ -22,6 +22,7 @@
         </div>
 
         <button class="build-btn" @click="build">Build</button>
+        <button class="deploy-btn" @click="deploy">Deploy</button>
       </div>
 
       <section class="editor">
@@ -32,7 +33,7 @@
   </div>
 </template>
 <script setup>
-import { getTemplate, getTemplates } from '@/api/serviceApi'
+import { buildTemplate, getTemplate, getTemplates } from '@/api/serviceApi'
 import { reactive, ref, computed, watch, onMounted } from 'vue'
 
 // dane trzymane w stanie
@@ -43,7 +44,6 @@ const provider = ref('Azure')
 onMounted(async () => {
   await getTemplates().then((r) => {
     templates.value = r.data
-    console.log(templates.value)
   })
 })
 
@@ -78,19 +78,28 @@ const output = ref('')
 
 function selectTemplate(tpl) {
   selected.value = tpl
-  // automatycznie pokazujemy strukturę json przy wyborze
-  //   output.value = JSON.stringify(prettifyTemplate(tpl), null, 2)
 }
 
-function build() {
-  if (!selected.value) {
-    output.value = '// Brak wybranej templatki dla aktualnego providera.'
-    return
-  }
+const deploy = async () => {
+  console.log(selected.value)
+  console.log(provider.value)
+}
 
-  // tutaj "build" po prostu pokazuje pełny obiekt jako JSON.
-  // w praktyce można tu umieścić logikę łączenia lub generowania pliku.
-  output.value = JSON.stringify(prettifyTemplate(selected.value), null, 2)
+async function build() {
+  console.log(provider.value)
+  await buildTemplate(provider.value.toUpperCase())
+    .then(async (r) => {
+      await getTemplates().then((r) => {
+        templates.value = r.data
+      })
+      const newTemplate = templates.value.find((el) => {
+        return el.fileName == `${r.data.newTemplate}.json`
+      })
+      selected.value = newTemplate
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 
 function prettifyTemplate(tpl) {
@@ -192,6 +201,19 @@ function formatDateOnly(ts) {
   font-weight: 600;
 }
 .build-btn:hover {
+  opacity: 0.95;
+}
+
+.deploy-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #2b8aef;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+.deploy-btn:hover {
   opacity: 0.95;
 }
 

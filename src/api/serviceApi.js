@@ -98,3 +98,17 @@ export const saveDbs = () => {
     args: [],
   })
 }
+
+export const deployAzureTemplate = (fileName) => {
+  return axiosInstance.post(`/AzureDeployer`, {
+    method: 'SAVE_DATABASES',
+    args: fileName,
+  })
+}
+
+export const deployCloudFlareTemplate = (fileName) => {
+  return axiosInstance.post(`/CloudflareDeployer`, {
+    method: 'SAVE_DATABASES',
+    args: fileName,
+  })
+}
