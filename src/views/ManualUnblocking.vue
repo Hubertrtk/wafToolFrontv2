@@ -75,6 +75,7 @@ const removeNetwork = (index: number) => {
   border-radius: 8px;
   border: none;
   cursor: pointer;
+  background: #1d2021;
 }
 .get-networks-button:hover {
   background-color: #333;
@@ -90,10 +91,10 @@ const removeNetwork = (index: number) => {
 }
 
 .card {
-  background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   padding: 1rem 1.5rem;
+  background: #1d2021;
 }
 
 h2 {
@@ -108,6 +109,7 @@ h2 {
   list-style: none;
   padding: 0;
   margin: 0;
+  background-color: #181818;
 }
 
 .network-item {
@@ -115,14 +117,15 @@ h2 {
   justify-content: space-between;
   align-items: center;
   padding: 0.4rem 0.8rem;
-  background: #f9fafb;
   border-radius: 8px;
   margin-bottom: 0.5rem;
   transition: background 0.2s ease;
+  background: #181818;
 }
 
 .network-item:hover {
   background: #eef2f7;
+  background-color: #333;
 }
 
 .remove-btn {
@@ -143,7 +146,7 @@ h2 {
 
 .cloudflare-list {
   word-break: break-all;
-  background: #f9fafb;
+  background: #181818;
   padding: 0.5rem;
   border-radius: 8px;
   font-family: monospace;

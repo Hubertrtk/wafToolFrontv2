@@ -126,11 +126,12 @@ function formatDateOnly(ts) {
     Roboto,
     'Helvetica Neue',
     Arial;
+  background-color: #121414;
 }
 
 .sidebar {
   width: 220px;
-  background: #f4f6f8;
+  background: #1d2021;
   border-right: 1px solid #e0e6eb;
   padding: 16px;
   overflow-y: auto;
@@ -148,16 +149,16 @@ function formatDateOnly(ts) {
 .sidebar li {
   padding: 8px 10px;
   margin-bottom: 8px;
-  background: white;
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
   text-align: center; /* tylko data, wycentrowane */
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+  background: #181a1b;
 }
 .sidebar li.active {
   outline: 2px solid #2b8aef;
-  background: #eaf3ff;
+  background: #1e2022;
 }
 
 .main {
@@ -213,7 +214,8 @@ textarea {
   font-size: 13px;
   border-radius: 8px;
   border: 1px solid #dbe6f3;
-  background: #fafbfe;
+  background: #1a1c1d;
+  color: #d3cfc9;
 }
 
 @media (max-width: 700px) {

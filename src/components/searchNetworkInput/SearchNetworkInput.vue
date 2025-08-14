@@ -121,12 +121,16 @@ watch(query, (newQuery) => {
   border-radius: 4px;
   cursor: pointer;
   z-index: 11;
+  background-color: #3b3b3b;
+  color: #f0f0f0;
 }
 
 .learn-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
   border-color: transparent; /* zamiast border: none */
+  background-color: #3b3b3b;
+  color: #2e2d2d;
 }
 
 .autocomplete-input {
@@ -137,6 +141,9 @@ watch(query, (newQuery) => {
   border: 1px solid #ccc;
   border-radius: 4px;
   z-index: 11;
+  background-color: #3b3b3b;
+  border-color: #3e4446;
+  color: #f0f0f0;
 }
 
 .autocomplete-list {
@@ -148,8 +155,8 @@ watch(query, (newQuery) => {
   border-radius: 0 0 4px 4px;
   max-height: 200px;
   overflow-y: auto;
-  background: #181a1b;
-  border: 2px solid white;
+  background: #131516;
+  border: 2px solid #303436;
   border-radius: 8px;
   min-width: 417px;
   position: fixed;
@@ -162,11 +169,12 @@ watch(query, (newQuery) => {
 .autocomplete-item {
   padding: 10px;
   cursor: pointer;
-  background-color: white;
+  /* background-color: white; */
+  color: #988d74;
 }
 
 .autocomplete-item:hover {
-  background-color: #f0f0f0;
+  background-color: #202325;
 }
 
 /* Responsywność */

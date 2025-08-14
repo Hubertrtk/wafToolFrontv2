@@ -131,6 +131,16 @@ async function handleNetworks() {
 }
 </script>
 <style scoped>
+::-webkit-scrollbar-track {
+  background: #c52525;
+}
+
+/* Suwak (thumb) */
+::-webkit-scrollbar-thumb {
+  background: #db1414;
+  border-radius: 6px;
+}
+
 .container {
   max-width: 1000px;
   margin: 0 auto;
@@ -140,7 +150,7 @@ async function handleNetworks() {
   grid-gap: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #222;
-  background: #f9f9f9;
+  background: #1b1e1f;
   height: 100%;
 }
 
@@ -153,6 +163,7 @@ async function handleNetworks() {
   padding: 16px 20px;
   border-radius: 8px;
   box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
+  background-color: #181a1b;
 }
 
 .top-panel h1 {
@@ -160,6 +171,7 @@ async function handleNetworks() {
   margin: 0 0 8px 0;
   font-weight: 700;
   font-size: 1.8rem;
+  color: #d3cfc9;
 }
 
 .controls {
@@ -190,10 +202,11 @@ async function handleNetworks() {
 .controls select {
   padding: 8px 12px;
   border-radius: 6px;
-  border: 1px solid #ccc;
-  background: white;
+  border: 1px solid #1f2222;
   font-size: 1rem;
   cursor: pointer;
+  background-color: #181818;
+  color: #d3cfc9;
 }
 
 .checkbox-label {
@@ -203,6 +216,7 @@ async function handleNetworks() {
   justify-content: flex-start;
   font-size: 0.9rem;
   user-select: none;
+  color: #d3cfc9;
 }
 
 .controls button {
@@ -225,6 +239,7 @@ async function handleNetworks() {
   padding: 16px 20px;
   border-radius: 8px;
   box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
+  background-color: #181a1b;
 }
 
 .networks-to-handle h2 {
@@ -232,6 +247,7 @@ async function handleNetworks() {
   font-weight: 700;
   font-size: 1.3rem;
   margin-bottom: 12px;
+  color: #d3cfc9;
 }
 
 .networks-to-handle ul {
@@ -241,25 +257,27 @@ async function handleNetworks() {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  background-color: #181a1b;
 }
 
 .networks-to-handle li {
-  background: #dbeafe;
   padding: 6px 12px;
   border-radius: 9999px;
   font-size: 0.9rem;
   user-select: none;
+  background-color: #181a1b;
 }
 
 .lists {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+  background-color: #181a1b;
 }
 
 .blocked,
 .disblocked {
-  background: white;
+  background-color: #181a1b;
   padding: 16px 20px;
   border-radius: 8px;
   box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
@@ -273,6 +291,7 @@ async function handleNetworks() {
   font-weight: 700;
   font-size: 1.3rem;
   margin-bottom: 12px;
+  color: #d3cfc9;
 }
 
 .blocked ul,
@@ -291,8 +310,9 @@ async function handleNetworks() {
   justify-content: space-between;
   align-items: center;
   padding: 6px 8px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #1f2222;
   font-size: 1rem;
+  color: #d3cfc9;
 }
 
 .add-btn {
@@ -336,7 +356,6 @@ async function handleNetworks() {
 }
 
 .networks-to-handle li {
-  background: #dbeafe;
   padding: 6px 12px;
   border-radius: 9999px;
   font-size: 0.9rem;
@@ -344,6 +363,8 @@ async function handleNetworks() {
   display: flex;
   align-items: center;
   gap: 8px;
+  background-color: #1b1e1f;
+  color: #d3cfc9;
 }
 
 .remove-btn {

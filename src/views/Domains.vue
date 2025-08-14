@@ -126,7 +126,8 @@ function openDomain() {
 
 .sidebar {
   width: 250px;
-  background: #f4f4f4;
+  background: #1d2021;
+
   padding: 20px;
   border-right: 1px solid #ddd;
   overflow-y: auto; /* <--- to dodaje scroll tylko w sidebarze */
@@ -153,7 +154,7 @@ function openDomain() {
 }
 
 .sidebar li:hover {
-  background-color: #e0e0e0;
+  background-color: #302e2e;
 }
 
 .sidebar li.active {

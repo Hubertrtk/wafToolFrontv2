@@ -266,7 +266,7 @@ const handleClickAutocomplete = (netName) => {
   overflow-y: auto;
   border: 1px solid #ddd;
   border-radius: 6px;
-  background: #fafafa;
+  background: #1d2021;
   overflow-x: hidden;
 }
 
@@ -284,7 +284,7 @@ const handleClickAutocomplete = (netName) => {
 }
 
 .autocomplete-itemff:hover {
-  background-color: #f0f8ff;
+  background-color: #3f4041;
   transform: translateX(2px);
   overflow: hidden;
 }

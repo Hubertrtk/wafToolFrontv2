@@ -49,7 +49,7 @@ function toggleMenu() {
   top: 0;
   left: 0;
   width: 100%;
-  background: white;
+  background: #181a1b;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1;
 }
@@ -75,7 +75,8 @@ function toggleMenu() {
 }
 .nav-links a {
   text-decoration: none;
-  color: black;
+  color: #e8e6e3;
+
   font-size: 0.95rem;
 }
 .hamburger {
