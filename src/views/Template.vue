@@ -33,7 +33,13 @@
   </div>
 </template>
 <script setup>
-import { buildTemplate, getTemplate, getTemplates } from '@/api/serviceApi'
+import {
+  buildTemplate,
+  deployAzureTemplate,
+  deployCloudFlareTemplate,
+  getTemplate,
+  getTemplates,
+} from '@/api/serviceApi'
 import { reactive, ref, computed, watch, onMounted } from 'vue'
 
 // dane trzymane w stanie
@@ -64,10 +70,8 @@ watch(filteredTemplates, (newList) => {
 })
 
 watch(selected, async (newValue) => {
-  console.log(newValue)
   if (newValue && newValue.fileName) {
     await getTemplate(newValue.fileName).then((r) => {
-      console.log(r.data)
       output.value = JSON.stringify(prettifyTemplate(r.data), null, 2)
     })
   }
@@ -83,6 +87,28 @@ function selectTemplate(tpl) {
 const deploy = async () => {
   console.log(selected.value)
   console.log(provider.value)
+  switch (provider.value) {
+    case 'Azure':
+      await deployAzureTemplate(selected.value.fileName)
+        .then((r) => {
+          console.log(r)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      break
+    case 'CloudFlare':
+      await deployCloudFlareTemplate(selected.value.fileName)
+        .then((r) => {
+          console.log(r)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      break
+    default:
+      console.warn('Nieznany provider:', provider.value)
+  }
 }
 
 async function build() {
