@@ -1,4 +1,5 @@
 <template>
+  <ToastContainer />
   <Navbar v-if="route.name !== 'login'" />
   <div class="view-container">
     <RouterView />
@@ -8,6 +9,7 @@
 <script setup>
 import Navbar from './components/navbar/Navbar.vue'
 import { useRoute } from 'vue-router'
+import ToastContainer from './components/toastContainer/ToastContainer.vue'
 
 const route = useRoute()
 </script>

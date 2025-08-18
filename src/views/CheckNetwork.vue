@@ -106,30 +106,45 @@
       <button @click="handleManualUnblocking">CLICK</button>
     </div>
   </div>
+  <LoadingSpinner v-if="isLoading" />
 </template>
 
 <script setup>
 import { checkServiceNetwork, searchNetwork } from '@/api/serviceApi'
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import SearchNetworkInput from '@/components/searchNetworkInput/SearchNetworkInput.vue'
 import { useRouter } from 'vue-router'
 import { useGlobalStore } from '@/stores/global'
 import { getNetworkType } from '@/helpers/getNetworkType'
 import { NETWORK_TYPE } from '@/helpers/constants'
+import LoadingSpinner from '@/components/loadingSpinner/LoadingSpinner.vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 const router = useRouter()
 const globalStore = useGlobalStore()
 
 const selectedNetwork = ref('')
 const networkInfo = ref({})
 const domainType = ref('')
+const isLoading = ref(false)
 
 const displayDomainSection = computed(() => {
   return networkInfo.value.networkType == 'domain'
 })
 
+onMounted(async () => {
+  const networkToCheck = route?.query?.network
+  if (networkToCheck) {
+    selectedNetwork.value = networkToCheck
+  }
+})
+
 watch(selectedNetwork, async (newValue) => {
+  isLoading.value = true
   await checkServiceNetwork(newValue)
     .then((r) => {
+      isLoading.value = false
       networkInfo.value = r.data
       if (r.data.networkType == 'domain') {
         if (r.data.providerType) {

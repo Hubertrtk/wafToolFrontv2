@@ -1,7 +1,7 @@
 <template>
+  <LoadingSpinner v-if="isLoading" />
   <div class="container">
     <SearchNetworkInput @selectNetwork="handleSelectedNetwork" />
-
     <!-- Lista sieci do odblokowania -->
     <div class="card">
       <h2>Networks to Unblock</h2>
@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import { manualUnblocking } from '@/api/serviceApi'
+import LoadingSpinner from '@/components/loadingSpinner/LoadingSpinner.vue'
 import SearchNetworkInput from '@/components/searchNetworkInput/SearchNetworkInput.vue'
 import { useGlobalStore } from '@/stores/global'
 import { onMounted, ref } from 'vue'
@@ -56,12 +57,15 @@ const handleSelectedNetwork = (networkName) => {
 }
 
 const handleGetNetworksButton = async () => {
+  isLoading.value = true
   manualUnblocking(networksToUnblock.value).then((res) => {
     response.value = res.data
+    isLoading.value = false
   })
 }
 
 const response = ref(false)
+const isLoading = ref(false)
 
 const removeNetwork = (index: number) => {
   networksToUnblock.value.splice(index, 1)

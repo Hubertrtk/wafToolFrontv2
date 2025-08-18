@@ -33,7 +33,10 @@
         <ul>
           <li v-for="(el, idx) in blockedNetworks" :key="idx">
             {{ el }}
-            <button class="add-btn" @click="addToHandle(el)">+</button>
+            <div class="btn-group">
+              <button class="info-btn" @click="showInfo(el)">i</button>
+              <button class="add-btn" @click="addToHandle(el)">+</button>
+            </div>
           </li>
         </ul>
       </div>
@@ -42,7 +45,10 @@
         <ul>
           <li v-for="(el, idx) in disBlockedNetworks" :key="idx">
             {{ el }}
-            <button class="add-btn" @click="addToHandle(el)">+</button>
+            <div class="btn-group">
+              <button class="info-btn" @click="showInfo(el)">i</button>
+              <button class="add-btn" @click="addToHandle(el)">+</button>
+            </div>
           </li>
         </ul>
       </div>
@@ -53,6 +59,7 @@
 <script setup>
 import { getGlobalBlockAzureNetworks, globalBlockAzureNetworks } from '@/api/serviceApi'
 import SearchNetworkInput from '@/components/searchNetworkInput/SearchNetworkInput.vue'
+import { openCheckNetworkWindow } from '@/helpers/openCheckNetworkWindow'
 import { ref, computed, onMounted } from 'vue'
 
 const networks = ref({})
@@ -92,6 +99,11 @@ function addNetworkToHandle() {
     networksToHandle.value.push(net)
   }
   newNetwork.value = ''
+}
+
+function showInfo(networkName) {
+  console.log('Info button clicked for:', networkName)
+  openCheckNetworkWindow(networkName)
 }
 
 function addToHandle(networkName) {
@@ -152,6 +164,26 @@ async function handleNetworks() {
   color: #222;
   background: #1b1e1f;
   height: 100%;
+}
+
+.btn-group {
+  display: flex;
+  gap: 6px;
+}
+
+.info-btn {
+  background: #3b82f6;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.info-btn:hover {
+  background: #2563eb;
 }
 
 .top-panel {

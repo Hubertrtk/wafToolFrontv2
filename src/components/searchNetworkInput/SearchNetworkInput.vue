@@ -6,7 +6,9 @@
       v-model="query"
       placeholder="Wpisz minimum 3 litery..."
       class="autocomplete-input"
+      :class="{ 'loading-border': isLoading }"
     />
+
     <button :disabled="validateLearn" class="learn-button" @click="handleLearnButton">Learn</button>
     <ul v-if="showBackground" class="autocomplete-list">
       <li
@@ -30,12 +32,12 @@ const query = ref('')
 const suggestions = ref([])
 const selectedNetwork = ref('')
 const isFocused = ref(false)
+const isLoading = ref(false)
 let debounceTimeout = null
 
 const emit = defineEmits(['selectNetwork']) // deklarujemy eventy
 
 const setIsFocused = (arg) => {
-  console.log('setting to : ' + arg)
   isFocused.value = arg
 }
 
@@ -64,9 +66,11 @@ const handleLearnButton = async () => {
 
 // Funkcja symulująca zapytanie do backendu
 const fetchSuggestions = async (searchText) => {
+  isLoading.value = true
   let resData = []
   await searchNetwork(searchText).then((r) => {
     resData = r.data
+    isLoading.value = false
   })
   return resData
 }
@@ -191,5 +195,21 @@ watch(query, (newQuery) => {
   .autocomplete-item {
     padding: 8px;
   }
+}
+
+@keyframes pulse-border {
+  0% {
+    border-color: #3e4446;
+  }
+  50% {
+    border-color: #00bcd4; /* kolor pulsowania */
+  }
+  100% {
+    border-color: #3e4446;
+  }
+}
+
+.loading-border {
+  animation: pulse-border 1s infinite;
 }
 </style>

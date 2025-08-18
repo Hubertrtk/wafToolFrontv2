@@ -31,6 +31,7 @@
       </section>
     </main>
   </div>
+  <LoadingSpinner v-if="isLoading" />
 </template>
 <script setup>
 import {
@@ -40,10 +41,15 @@ import {
   getTemplate,
   getTemplates,
 } from '@/api/serviceApi'
+import LoadingSpinner from '@/components/loadingSpinner/LoadingSpinner.vue'
+import { useToastStore } from '@/stores/toastStore'
 import { reactive, ref, computed, watch, onMounted } from 'vue'
+
+const toast = useToastStore()
 
 // dane trzymane w stanie
 const templates = ref([])
+const isLoading = ref(false)
 
 // provider - kontrolka przełącznika
 const provider = ref('Azure')
@@ -85,25 +91,25 @@ function selectTemplate(tpl) {
 }
 
 const deploy = async () => {
-  console.log(selected.value)
-  console.log(provider.value)
   switch (provider.value) {
     case 'Azure':
       await deployAzureTemplate(selected.value.fileName)
         .then((r) => {
-          console.log(r)
+          toast.addToast(`Pomyślnie wykonano deploy do Azure`, 'success')
         })
         .catch((err) => {
           console.log(err)
+          toast.addToast(`Coś poszło nie tak... ${err}`, 'error')
         })
       break
     case 'CloudFlare':
       await deployCloudFlareTemplate(selected.value.fileName)
         .then((r) => {
-          console.log(r)
+          toast.addToast(`Pomyślnie wykonano deploy do CloudFlare`, 'success')
         })
         .catch((err) => {
           console.log(err)
+          toast.addToast(`Coś poszło nie tak... ${err}`, 'error')
         })
       break
     default:
@@ -112,7 +118,6 @@ const deploy = async () => {
 }
 
 async function build() {
-  console.log(provider.value)
   await buildTemplate(provider.value.toUpperCase())
     .then(async (r) => {
       await getTemplates().then((r) => {
@@ -122,9 +127,10 @@ async function build() {
         return el.fileName == `${r.data.newTemplate}.json`
       })
       selected.value = newTemplate
+      toast.addToast(`Nowa templatka zbudowana pod nazwa: ${r.data.newTemplate}`, 'success')
     })
     .catch((err) => {
-      console.log(err)
+      toast.addToast(`Coś poszło nie tak... ${err}`, 'error')
     })
 }
 
